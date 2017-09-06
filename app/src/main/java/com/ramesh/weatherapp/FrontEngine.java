@@ -86,4 +86,19 @@ public class FrontEngine extends Application{
         return key;
     }
 
+
+    /* alert Dialogue for validation */
+    public static void AlertDialogue(String content, Context context, String title) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title).setMessage(content)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        builder.setCancelable(true);
+                    }
+                }).show();
+
+    }
+
+
 }

@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,6 +28,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.ramesh.weatherapp.fragments.FragmentWeather;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +90,28 @@ public class MainActivity extends AppCompatActivity
         }
 
         initViews();
+        requestPermissions();
+        switchContent(new FragmentWeather());
+
     }
 
+    /**
+     * This method will change the fragment
+     * @param fragment
+     */
+    public void switchContent(Fragment fragment) {
+        try {
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.slide_in_right, R.anim.slide_out_left,
+                            R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.container,
+                    fragment).commit();
+        } catch (IllegalStateException e) {
+
+        } catch (Exception e) {
+
+        }
+    }
     /**
      * This method will initialize the view and apply functionality
      */

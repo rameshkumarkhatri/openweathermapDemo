@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -53,18 +54,28 @@ public class FragmentWeather extends BaseFragment {
     TextView tvNoRecords;
     @BindView(R.id.pb)
     TextView pb;
+    @BindView(R.id.ll_data)
+    LinearLayout llData;
     private boolean isServiceRunning;
     private ModelWeather responseModel;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_weather, null);
+
+        view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(view);
         if (mActivity.isLocationAvailable()) requestHttpCall(0, false, null);
+        else erorrGPS();
         return view;
     }
 
+    private void erorrGPS() {
+        llData.setVisibility(View.GONE);
+        tvNoRecords.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.GONE);
+        tvNoRecords.setText(R.string.please_allow_location_click_here);
+    }
 
     @Override
     public void onResult(int type, HttpResponse o) {
@@ -73,11 +84,13 @@ public class FragmentWeather extends BaseFragment {
     }
 
     private void populateData(ModelWeather responseModel) {
-        tvCityName.setText(responseModel.getName()+"");
-        if(responseModel.getWeather().size()>0 && responseModel.getWeather().get(0) !=null)
-        tvDescription.setText(responseModel.getWeather().get(0).getDescription()+"");
-        tvGroundLevel.setText(responseModel.getMain().getGrndLevel()+"");
-        tvGroundLevel.setText(responseModel.getMain().getGrndLevel()+"");
+        tvCityName.setText(responseModel.getName() + "");
+        if (responseModel.getWeather().size() > 0 && responseModel.getWeather().get(0) != null)
+            tvDescription.setText(responseModel.getWeather().get(0).getDescription() + "");
+        tvGroundLevel.setText(responseModel.getMain().getGrndLevel() + "");
+        tvGroundLevel.setText(responseModel.getMain().getGrndLevel() + "");
+
+        llData.setVisibility(View.VISIBLE);
 
     }
 
@@ -126,12 +139,6 @@ public class FragmentWeather extends BaseFragment {
         } else {
             erorrGPS();
         }
-    }
-
-    private void erorrGPS() {
-        tvNoRecords.setVisibility(View.VISIBLE);
-        pb.setVisibility(View.GONE);
-        tvNoRecords.setText(R.string.please_allow_location_click_here);
     }
 
     @OnClick(R.id.tv_no_data)

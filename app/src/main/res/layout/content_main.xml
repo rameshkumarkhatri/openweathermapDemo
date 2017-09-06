@@ -9,4 +9,9 @@
     tools:context="com.ramesh.weatherapp.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></FrameLayout>
 </android.support.constraint.ConstraintLayout>

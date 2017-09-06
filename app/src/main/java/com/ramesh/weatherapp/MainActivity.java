@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,13 +29,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.ramesh.weatherapp.fragments.FragmentPreviousDaysWeather;
 import com.ramesh.weatherapp.fragments.FragmentWeather;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+            implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private static final int REQUEST_PERMISSIONS = 1101;
     Location location;
     LocationManager manager;
@@ -136,6 +138,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView tvName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.tv_email);
+        tvName.setText(FrontEngine.user.getFullname()+"");
+        navigationView.getMenu().getItem(0).setTitle("Current Weather");
+        navigationView.getMenu().getItem(1).setTitle("5 Days Weather");
     }
 
     @Override
@@ -157,7 +164,9 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            switchContent(new FragmentWeather());
         } else if (id == R.id.nav_gallery) {
+            switchContent(new FragmentPreviousDaysWeather());
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

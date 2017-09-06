@@ -22,4 +22,12 @@
     <string name="no_data_found_click_here_retry">No data found.\nClick here to retry!</string>
     <string name="please_allow_location_click_here">Please enable GPS then Click here to retry!</string>
     <string name="internet_connection_failed">Internet connection failed, Click here to try again!</string>
+    <string name="error_data">There is error occured while getting data, click here to retry!</string>
+    <string name="description">Description</string>
+    <string name="ground_level">Ground Level : \t</string>
+    <string name="humidity">Humidity : \t</string>
+    <string name="pressure">Pressure : \t</string>
+    <string name="sea_level">Sea Level : \t</string>
+    <string name="max_temp">Max Temp : \t</string>
+    <string name="min_temp">Min Temp : \t</string>
 </resources>

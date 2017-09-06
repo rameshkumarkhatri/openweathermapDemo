@@ -32,4 +32,11 @@ public class User {
         this.fbAccessToken = fbAccessToken;
     }
 
+    public String getFbAccessToken() {
+        return fbAccessToken;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
 }

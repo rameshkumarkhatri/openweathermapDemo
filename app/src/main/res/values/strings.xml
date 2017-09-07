@@ -30,4 +30,5 @@
     <string name="sea_level">Sea Level : \t</string>
     <string name="max_temp">Max Temp : \t</string>
     <string name="min_temp">Min Temp : \t</string>
+    <string name="guest">As Guest</string>
 </resources>

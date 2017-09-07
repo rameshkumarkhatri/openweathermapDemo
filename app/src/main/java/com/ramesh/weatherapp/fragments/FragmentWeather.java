@@ -144,6 +144,7 @@ public class FragmentWeather extends BaseFragment {
         if (FrontEngine.LATITUDE > 0) {
             pb.setVisibility(View.VISIBLE);
             tvNoRecords.setVisibility(View.GONE);
+            llData.setVisibility(View.GONE);
             isServiceRunning = true;
             RetrofitFactory.getRetrofitFactory().requestService(RetrofitFactory.GET, new HashMap<>(), RetrofitFactory.MainApiUrl + "weather?lat=" + FrontEngine.LATITUDE + "&lon=" + FrontEngine.LONGITUDE + "&APPID=" + mActivity.getResources().getString(R.string.weather_app_id), null, new CallBackRetrofit(1, this));
         } else {

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,6 +23,9 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -29,37 +33,43 @@ import io.fabric.sdk.android.Fabric;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Splash extends AppCompatActivity {
-
+    @BindView(R.id.pb)
     ProgressBar progressBar;
-    private View mContentView;
-    private CallbackManager callbackManager;
-    private LoginButton loginButton;
+    @BindView(R.id.btn_as_guest)
+    Button btnGuest;
+
+    @BindView(R.id.fullscreen_content)
+     View mContentView;
+     CallbackManager callbackManager;
+     LoginButton loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         initViews();
         fbFunctionality();
         FrontEngine.printKeyHash(this);
+    }
+
+    @OnClick(R.id.btn_as_guest)
+    public void guestClick(View view) {
+        navigateAfterDelay(0);
     }
 
     /**
      * This method will initialize the views
      */
     private void initViews() {
-
-        mContentView = findViewById(R.id.fullscreen_content);
-        progressBar = (ProgressBar) findViewById(R.id.pb);
-
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
     }
 
     /**
@@ -130,6 +140,7 @@ public class Splash extends AppCompatActivity {
     public void getUserDetails() {
         progressBar.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.GONE);
+        btnGuest.setVisibility(View.GONE);
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
@@ -187,6 +198,7 @@ public class Splash extends AppCompatActivity {
 
     /**
      * this method will call the facebook callback manager to get the profile and authenticate
+     *
      * @param requestCode
      * @param resultCode
      * @param data

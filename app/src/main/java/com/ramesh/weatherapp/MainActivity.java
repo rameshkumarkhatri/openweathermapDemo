@@ -140,7 +140,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView tvName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.tv_email);
-        tvName.setText(FrontEngine.user.getFullname()+"");
+        if(FrontEngine.user != null)
+            tvName.setText(FrontEngine.user.getFullname()+"");
+        else tvName.setText(R.string.guest);
         navigationView.getMenu().getItem(0).setTitle("Current Weather");
         navigationView.getMenu().getItem(1).setTitle("5 Days Weather");
     }

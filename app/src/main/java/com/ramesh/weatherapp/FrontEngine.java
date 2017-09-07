@@ -15,23 +15,28 @@ import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Ramesh Kumar on 8/31/17.
  */
 
-public class FrontEngine extends Application{
+public class FrontEngine extends Application {
 
-    public static User user=null;
+    public static User user = null;
+    public static double LATITUDE, LONGITUDE;
+    private static FrontEngine frontEngine;
+    SimpleDateFormat postFormater, curFormater;
+    String dateString, newDateStr = null;
+    Date dateObj;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public static FrontEngine getInstance() {
+        if (frontEngine == null)
+            frontEngine = new FrontEngine();
+        return frontEngine;
     }
-
-
-    public static double LATITUDE,LONGITUDE;
-
 
     /* alert Dialogue for validation */
     public static void AlertDialogueGPS(String content, final Context context, String title) {
@@ -86,7 +91,6 @@ public class FrontEngine extends Application{
         return key;
     }
 
-
     /* alert Dialogue for validation */
     public static void AlertDialogue(String content, Context context, String title) {
 
@@ -100,5 +104,25 @@ public class FrontEngine extends Application{
 
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    /* String to date format Start */
+    public String dateFormat(String currentDate, String currentFormat,
+                             String changeFormat) {
+        dateString = currentDate;
+        curFormater = new SimpleDateFormat(currentFormat);
+
+        try {
+            dateObj = curFormater.parse(dateString);
+            postFormater = new SimpleDateFormat(changeFormat);
+            newDateStr = postFormater.format(dateObj);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newDateStr;
+    }
 
 }

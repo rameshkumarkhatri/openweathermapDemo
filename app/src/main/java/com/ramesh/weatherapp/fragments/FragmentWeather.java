@@ -73,6 +73,9 @@ public class FragmentWeather extends BaseFragment {
         return view;
     }
 
+    /**
+     * this will show the error of GPS
+     */
     private void erorrGPS() {
         llData.setVisibility(View.GONE);
         tvNoRecords.setVisibility(View.VISIBLE);
@@ -121,8 +124,6 @@ public class FragmentWeather extends BaseFragment {
     @Override
     public void onError(int type, HttpResponse o, Exception e) {
         isServiceRunning = false;
-//        if (responseModel == null)
-//            FrontEngine.AlertDialogue("There is error occured while getting data", mActivity, "Alert");
 
         tvNoRecords.setVisibility(View.VISIBLE);
         pb.setVisibility(View.GONE);
@@ -132,8 +133,6 @@ public class FragmentWeather extends BaseFragment {
     @Override
     public void noInternetAccess() {
         isServiceRunning = false;
-//        if (responseModel == null)
-//            FrontEngine.AlertDialogue("There is error occured while getting data", mActivity, "Alert");
 
         tvNoRecords.setVisibility(View.VISIBLE);
         pb.setVisibility(View.GONE);

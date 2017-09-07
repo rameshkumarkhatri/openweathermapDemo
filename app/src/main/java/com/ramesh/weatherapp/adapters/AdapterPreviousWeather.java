@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
+import com.ramesh.weatherapp.FrontEngine;
 import com.ramesh.weatherapp.R;
 import com.ramesh.weatherapp.models.ModelDays;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Ramesh Kumar com on 9/7/2017.
@@ -53,23 +52,21 @@ public class AdapterPreviousWeather extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
-        if (position == 0) {
 
-            final MyViewHolder holder = (MyViewHolder) viewHolder;
+        final MyViewHolder holder = (MyViewHolder) viewHolder;
 
-            ModelDays item = arrayList.get(position);
-            holder.tvName.setText(item.getDate()+"");
-            holder.rv.setAdapter(new AdapterRestaurantMenuItem(activity, item.getList(), position, onItemClick));
+        ModelDays item = arrayList.get(position);
+        holder.tvName.setText(FrontEngine.getInstance().dateFormat(item.getDate(), "yyyy-MM-dd", "dd MMM, yyyy"));
 
-        }
+        holder.rv.setAdapter(new AdapterRestaurantMenuItem(activity, item.getList(), position, onItemClick));
+
 
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0)
-            return 3;
-        if (arrayList.get(position - 1) != null && arrayList.size() > 0) {
+
+        if (arrayList.get(position) != null && arrayList.size() > 0) {
             return TYPE_DATA;
         } else {
             return 0;
@@ -85,7 +82,7 @@ public class AdapterPreviousWeather extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemCount() {
 
-        return arrayList == null ? 1 : arrayList.size() + 1;
+        return arrayList == null ? 0 : arrayList.size();
     }
 
 
@@ -151,12 +148,19 @@ public class AdapterPreviousWeather extends RecyclerView.Adapter<RecyclerView.Vi
                 final MyViewHolderItem holder = (MyViewHolderItem) viewHolder;
 
                 com.ramesh.weatherapp.models.List item = arrayList.get(position);
-holder.tvTempMax.setText((item.getMain().getTempMax()-273.15) + " °C");
-holder.tvTempMin.setText((item.getMain().getTempMin()-273.15) + " °C");
-holder.tvTime.setText((item.getMain().getTempMin()-273.15) + " °C");
 
+                DecimalFormat df = new DecimalFormat("#.##");
+                Double degree = Double.valueOf(df.format((item.getMain().getTempMin() - 273.15)));
 
-                if(onItemClick!=null)
+                holder.tvTempMin.setText("Min. " + String.valueOf(degree) + " °C");
+                degree = Double.valueOf(df.format((item.getMain().getTempMax() - 273.15)));
+                holder.tvTempMax.setText("Max. " + String.valueOf(degree) + " °C");
+
+                holder.tvTime.setText(FrontEngine.getInstance().dateFormat(item.getDtTxt(), "yyyy-MM-DD HH:mm:ss", "hh:mm a"));
+                if (item.getWeather() != null && item.getWeather().size() > 0)
+                    holder.tvType.setText(item.getWeather().get(0).getDescription());
+                else holder.tvType.setText("--");
+                if (onItemClick != null)
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

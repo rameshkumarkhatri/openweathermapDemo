@@ -17,4 +17,12 @@ public class ModelDays {
     public ArrayList<List> getList() {
         return list;
     }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void addModel(List obj) {
+        list.add(obj);
+    }
 }

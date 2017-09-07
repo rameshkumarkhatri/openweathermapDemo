@@ -2,6 +2,7 @@ package com.ramesh.weatherapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,12 +16,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ramesh.weatherapp.FrontEngine;
 import com.ramesh.weatherapp.R;
-import com.ramesh.weatherapp.models.ModelWeather;
+import com.ramesh.weatherapp.adapters.AdapterPreviousWeather;
+import com.ramesh.weatherapp.models.List;
+import com.ramesh.weatherapp.models.ModelDays;
 import com.ramesh.weatherapp.models.PreviousDaysWeather;
 import com.ramesh.weatherapp.retrofit.CallBackRetrofit;
 import com.ramesh.weatherapp.retrofit.HttpResponse;
 import com.ramesh.weatherapp.retrofit.RetrofitFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -40,14 +45,16 @@ public class FragmentPreviousDaysWeather extends BaseFragment {
     LinearLayout llData;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    AdapterPreviousWeather adapter;
     private boolean isServiceRunning;
     private PreviousDaysWeather responseModel;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_weather_previous, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         if (mActivity.isLocationAvailable()) requestHttpCall(0, false, null);
         else erorrGPS();
         return view;
@@ -67,11 +74,34 @@ public class FragmentPreviousDaysWeather extends BaseFragment {
     }
 
     private void populateData(PreviousDaysWeather responseModel) {
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL, false));
+        adapter = new AdapterPreviousWeather(mActivity, getList(responseModel.getList()));
+        recyclerView.setAdapter(adapter);
         llData.setVisibility(View.VISIBLE);
         tvNoRecords.setVisibility(View.GONE);
         pb.setVisibility(View.GONE);
 
+    }
+
+    private ArrayList<ModelDays> getList(java.util.List<List> list) {
+        ArrayList<ModelDays> listDays = new ArrayList<>();
+        Date date = null;
+        ModelDays modelDays = null;
+        for (List obj : list) {
+            String[] dateString = obj.getDtTxt().split(" ");
+            if (modelDays == null) {
+                modelDays = new ModelDays();
+                modelDays.setDate(dateString[0]);
+            }
+            if (modelDays.getDate().equalsIgnoreCase(dateString[0]))
+                modelDays.addModel(obj);
+            else {
+                listDays.add(modelDays);
+                modelDays = new ModelDays();
+                modelDays.setDate(dateString[0]);
+            }
+        }
+        return listDays;
     }
 
     @Override

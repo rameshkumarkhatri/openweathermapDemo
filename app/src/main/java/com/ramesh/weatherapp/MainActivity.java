@@ -304,8 +304,6 @@ public class MainActivity extends AppCompatActivity
             return false;
 
         } else {
-
-
             manager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
             List<String> providers = manager.getProviders(true);
             for (String provider : providers) {
